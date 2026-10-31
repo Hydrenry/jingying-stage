@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f3ed">
+  <meta name="description" content="王晶莹非官方演出排期整理。根据用户提供的《王晶莹_商演排期.xlsx》收录，支持按月查看、筛选场次与查看详情。">
+  <title>晶莹的舞台 · 王晶莹演出排期</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23343d33'/%3E%3Cpath d='M5 12L10 6H22L27 12L16 27Z M5 12H27 M10 6L16 12L22 6 M10 12L16 27L22 12' fill='none' stroke='%23f2ebd8' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=20261030-1">
+  <script src="./config.js" defer></script>
+  <script src="./cloud-client.js" defer></script>
+  <script src="./app.js?v=github-1" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#schedule">跳到演出排期</a>
+  <div class="site-shell">
+    <header class="masthead">
+      <a class="brand" href="#" aria-label="晶莹的舞台，首页"><span class="brand-mark" aria-hidden="true"><img src="assets/diamond.svg" width="28" height="28" alt=""></span><span>晶莹的舞台<small>BLING ON STAGE</small></span></a>
+      <nav aria-label="网站导航"><a class="nav-active" href="#schedule">演出排期</a><button class="text-button" id="about-button" type="button">使用说明 <span aria-hidden="true">↗</span></button></nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="tiny-star" aria-hidden="true">✳</span> 王晶莹 · 演出排期本</p>
+          <h1 id="hero-title">把下一次见面，<br>写进日历。</h1>
+          <p class="hero-description">记下每一场期待，让喜欢有迹可循。</p>
+          <div class="hero-caption"><span class="line" aria-hidden="true"></span> 从一张演出票，到一段好时光</div>
+        </div>
+        <figure class="hero-portrait">
+          <img src="assets/portrait.jpg?v=20261029-2" width="1440" height="2162" alt="王晶莹写真" fetchpriority="high" decoding="async">
+        </figure>
+      </section>
+
+      <div class="source-note" role="note"><span class="source-label">排期整理</span><p>时间、地点及调整情况，以演员、剧方或剧院的最新公告为准。</p></div>
+
+      <section id="schedule" class="schedule-section" aria-labelledby="schedule-title">
+        <div class="section-heading"><div><p class="eyebrow">THE PERFORMANCE CALENDAR</p><h2 id="schedule-title">演出日历<span class="heading-dot">.</span></h2></div><span class="section-note">为每一次相见，留一个位置</span></div>
+        <div class="schedule-toolbar">
+          <div class="view-switch" role="group" aria-label="显示方式"><button type="button" class="is-active" id="calendar-view" aria-pressed="true"><span aria-hidden="true">▦</span> 日历</button><button type="button" id="list-view" aria-pressed="false"><span aria-hidden="true">☷</span> 列表</button></div>
+          <div class="filter-controls"><label class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" aria-label="搜索剧目、城市或剧场" placeholder="搜索剧目、城市或剧场"></label><label class="city-filter"><span class="sr-only">按城市筛选</span><select id="city-filter"><option value="">全部城市</option></select></label></div>
+        </div>
+
+        <div class="archive-bar"><p id="coverage"></p><label><span class="sr-only">跳转到已收录月份</span><select id="month-jump"><option value="">跳转到已收录月份</option></select></label></div>
+
+        <div id="schedule-layout" class="schedule-layout">
+          <section class="calendar-panel" aria-label="按日期选择场次">
+            <div class="month-controls"><div><p id="month-english" class="month-english">OCTOBER</p><h3 id="month-label">2026年10月</h3></div><div class="month-buttons"><button type="button" id="previous-month" aria-label="上一个月">‹</button><button type="button" id="reset-month" class="month-reset">本月</button><button type="button" id="next-month" aria-label="下一个月">›</button></div></div>
+            <div class="weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+            <div id="calendar-days" class="calendar-days" aria-label="日期"></div>
+            <div class="calendar-legend"><span><i aria-hidden="true"></i> 有演出场次</span><span>点击日期查看当天排期</span></div>
+          </section>
+
+          <section class="performance-panel" aria-labelledby="list-heading">
+            <div class="list-heading"><h3 id="list-heading">本月排期 <span id="performance-count">0</span></h3><button type="button" class="text-button clear-selection" id="clear-date" hidden>查看整月 ↗</button></div>
+            <div id="performances" aria-live="polite"></div>
+            <div class="list-footnote"><span aria-hidden="true">✳</span><p>排期按用户提供的表格整理；具体信息请以演员、剧方或剧院的最新公告为准。</p></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer><div><span class="footer-brand">晶莹的舞台</span><span class="footer-description">一份关于舞台与期待的记录。</span></div><p>非官方排期整理 · <span id="updated-at">根据用户提供排期表收录</span></p></footer>
+  </div>
+
+  <dialog id="detail-dialog" aria-labelledby="detail-title"><div class="dialog-top"><span class="eyebrow">PERFORMANCE DETAILS</span><button class="close-button" id="close-detail" type="button" aria-label="关闭详情">×</button></div><span class="detail-badge">演出排期</span><h2 id="detail-title"></h2><dl id="detail-fields"></dl><p id="detail-note" class="detail-note"></p><button id="copy-performance" class="primary-button" type="button">复制场次信息 <span aria-hidden="true">↗</span></button><p id="copy-status" class="copy-status" role="status"></p></dialog>
+
+  <dialog id="about-dialog" aria-labelledby="about-title"><div class="dialog-top"><span class="eyebrow">ABOUT THIS NOTEBOOK</span><button class="close-button" id="close-about" type="button" aria-label="关闭使用说明">×</button></div><h2 id="about-title">从这里，开始记录。</h2><p>这是一本王晶莹的非官方演出排期本，根据提供的《王晶莹_商演排期.xlsx》整理收录。排期记录不代表已确认实际登台。</p><ol><li>用左右箭头切换月份，也可以跳转到已收录月份。</li><li>点击日期，用城市筛选或搜索框找到演出。</li><li>点击排期卡片，查看时间、剧场、角色和备注。</li></ol><p>表格未填写的时间、地点等信息保留为待补充。排期变动以最新公告为准。</p></dialog>
+  <noscript><p class="noscript-note">请启用浏览器 JavaScript，以使用排期日历。</p></noscript>
+</body>
+</html>

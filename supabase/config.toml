@@ -1,0 +1,26 @@
+# Local project defaults. Hosted Auth settings and SITE_URL must also be configured in Dashboard.
+project_id = "jingying-stage-notebook"
+
+[auth]
+enabled = true
+site_url = "http://127.0.0.1:5500"
+enable_signup = false
+enable_anonymous_sign_ins = false
+minimum_password_length = 12
+
+[auth.email]
+enable_signup = false
+enable_confirmations = true
+otp_expiry = 3600
+
+# This package never sends invitations; also keep optional password-change notifications off.
+[auth.email.notification.password_changed]
+enabled = false
+
+[functions.admin-access]
+enabled = true
+verify_jwt = false
+
+[functions.accept-invitation]
+enabled = true
+verify_jwt = false

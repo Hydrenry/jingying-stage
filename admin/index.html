@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="robots" content="noindex, nofollow">
+  <title>排期管理 · 晶莹的舞台</title>
+  <link rel="stylesheet" href="../admin.css">
+  <script src="../config.js" defer></script>
+  <script src="../cloud-client.js" defer></script>
+  <script src="../admin.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#admin-main">跳到排期管理</a>
+  <div class="admin-shell">
+    <header class="admin-header">
+      <a class="admin-brand" href="../"><span>晶莹的舞台</span><small>排期管理</small></a>
+      <nav class="admin-nav" aria-label="管理导航">
+        <span id="owner-access-links" hidden><a href="./access.html">权限管理</a> <button class="text-button" type="button" id="download-backup">下载排期备份</button></span>
+        <a href="../">查看访客页面 ↗</a>
+        <a href="../logout.html">退出登录</a>
+      </nav>
+    </header>
+    <main id="admin-main">
+      <section class="admin-intro" aria-labelledby="admin-title">
+        <div>
+          <p class="eyebrow">晶莹的舞台 · 管理员</p>
+          <h1 id="admin-title">管理演出排期</h1>
+          <p class="intro-description">填写表单即可更新网站。删除的排期会先进入回收站，之后可以恢复。</p>
+        </div>
+        <button id="new-performance" class="primary-button" type="button" disabled>＋ 新增排期</button>
+      </section>
+
+      <section id="status-panel" class="status-panel" data-tone="loading" role="status" aria-live="polite" aria-atomic="true">
+        <div class="status-copy"><p id="status-message">正在读取排期，请稍候…</p></div>
+        <div class="status-actions">
+          <button id="reload-data" class="secondary-button" type="button">重新加载</button>
+          <a id="signin-link" class="link-button" href="../login.html" hidden>重新登录</a>
+        </div>
+      </section>
+      <p id="data-meta" class="data-meta">正在连接排期本…</p>
+
+      <div class="admin-workspace">
+        <section class="list-panel" aria-labelledby="list-title">
+          <div class="panel-heading"><h2 id="list-title">排期列表</h2><span id="record-count" class="count-badge">—</span></div>
+          <div class="list-tools">
+            <label class="search-field"><span>搜索排期</span><input id="search" type="search" placeholder="剧目、城市或日期，如 2026-11" autocomplete="off" disabled></label>
+            <label class="month-field"><span>月份</span><select id="month-filter" disabled><option value="">全部月份</option></select></label>
+          </div>
+          <div class="list-tabs" role="group" aria-label="选择排期列表或回收站">
+            <button id="active-tab" class="tab-button is-active" type="button" aria-pressed="true">排期列表</button>
+            <button id="trash-tab" class="tab-button" type="button" aria-pressed="false">回收站</button>
+          </div>
+          <p id="list-summary" class="list-summary">正在读取排期…</p>
+          <div id="record-list" class="record-list" aria-busy="true"></div>
+        </section>
+
+        <aside id="editor-panel" class="editor-panel" aria-label="编辑排期">
+          <div id="editor-placeholder" class="editor-placeholder">
+            <p class="eyebrow">记录下一次见面</p>
+            <h2>从一条排期开始</h2>
+            <p>点击“新增排期”，或在左侧找到一条排期，点击“编辑”。</p>
+          </div>
+          <div id="editor-content" hidden>
+            <div class="panel-heading"><h2 id="editor-title">新增排期</h2><p id="draft-state" class="draft-state">尚未保存</p></div>
+            <p class="editor-help">剧目和日期为必填项。暂未确定的时间、地点或角色可以留空。</p>
+            <form id="schedule-form" autocomplete="off">
+              <fieldset id="form-fields" class="fields-grid" disabled>
+                <legend class="sr-only">演出信息</legend>
+                <label class="field full-width"><span>剧目 / 活动 <span class="required-label">必填</span></span><input id="field-title" name="title" type="text" required maxlength="200" placeholder="例如：杜十娘"></label>
+                <label class="field"><span>日期 <span class="required-label">必填</span></span><input id="field-date" name="date" type="date" required></label>
+                <label class="field"><span>开演时间 <span class="optional-label">可留空</span></span><input id="field-time" name="time" type="time" step="60"></label>
+                <label class="field"><span>城市</span><input id="field-city" name="city" type="text" maxlength="100" placeholder="例如：北京"></label>
+                <label class="field"><span>角色</span><input id="field-role" name="role" type="text" maxlength="200" placeholder="未确定可留空"></label>
+                <label class="field full-width"><span>剧场</span><input id="field-venue" name="venue" type="text" maxlength="300" placeholder="例如：国家话剧院剧场"></label>
+                <label class="field full-width"><span>备注</span><textarea id="field-note" name="note" rows="5" maxlength="5000" placeholder="可以填写补充信息或排期调整说明"></textarea></label>
+              </fieldset>
+              <p id="form-error" class="form-error" role="alert" hidden></p>
+              <div class="form-actions"><button id="save-performance" class="primary-button" type="submit" disabled>保存排期</button><button id="cancel-edit" class="secondary-button" type="button">取消编辑</button></div>
+              <p class="save-help">点击保存并收到成功提示后，更新才会同步到访客页面。</p>
+            </form>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer class="admin-footer"><p>晶莹的舞台 · 一份关于舞台与期待的记录。</p><a href="../">返回演出日历 ↗</a></footer>
+  </div>
+  <noscript><p class="noscript-note">请启用浏览器 JavaScript 后使用排期管理。</p></noscript>
+</body>
+</html>
